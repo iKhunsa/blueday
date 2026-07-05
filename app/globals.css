@@ -101,21 +101,6 @@ body {
   filter: blur(20px);
 }
 
-/* ---- constelación flotando ---- */
-.flotar {
-  animation: flotar 9s ease-in-out infinite;
-}
-
-@keyframes flotar {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 /* ---- brillo del texto ---- */
 .brillo-suave {
   text-shadow: 0 0 24px rgba(138, 184, 255, 0.35),
