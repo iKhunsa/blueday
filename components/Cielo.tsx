@@ -82,12 +82,31 @@ function ConstelacionMichi({
   );
 }
 
+// Mar de nubes: PNG pregenerado con ruido fractal (el fade desde arriba va
+// horneado en la imagen). Filtros SVG en vivo saturaban el renderer.
+function Nubes() {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[38vh]">
+      {/* línea de luz donde el cielo toca las nubes */}
+      <div className="horizonte absolute inset-x-0 top-[18%] h-16" />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url(/nubes.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+        }}
+      />
+    </div>
+  );
+}
+
 export default function Cielo() {
   const estrellas = useMemo(() => {
     const rand = mulberry32(20260704);
     return Array.from({ length: 150 }, () => ({
       left: rand() * 100,
-      top: rand() * 100,
+      top: rand() * 62, // solo en la zona oscura del cielo, no sobre las nubes
       size: rand() * 1.8 + 0.6,
       delay: rand() * 6,
       duration: rand() * 4 + 3,
@@ -96,23 +115,6 @@ export default function Cielo() {
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      {/* nebulosas azules */}
-      <div
-        className="nebulosa left-[-10%] top-[55%] h-[50vh] w-[60vw]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(30,80,190,0.35), transparent 70%)",
-        }}
-      />
-      <div
-        className="nebulosa right-[-15%] top-[30%] h-[45vh] w-[50vw]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(90,60,200,0.18), transparent 70%)",
-          animationDelay: "5s",
-        }}
-      />
-
       {/* estrellas */}
       {estrellas.map((e, i) => (
         <div
@@ -143,8 +145,11 @@ export default function Cielo() {
       />
       <ConstelacionMichi
         nombre="Michi Menor"
-        className="bottom-[14%] left-[5%] w-20 opacity-60 md:left-[9%] md:w-28"
+        className="left-[5%] top-[34%] w-20 opacity-60 md:left-[8%] md:top-[38%] md:w-28"
       />
+
+      {/* mar de nubes */}
+      <Nubes />
     </div>
   );
 }

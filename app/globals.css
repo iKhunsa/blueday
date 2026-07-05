@@ -14,13 +14,16 @@ body {
 body {
   color: var(--texto);
   font-family: var(--font-inter), system-ui, sans-serif;
-  /* Negro arriba → azul profundo abajo, como la referencia */
+  /* Espacio arriba → atmósfera azul → luz del horizonte, como la referencia */
   background: linear-gradient(
     to bottom,
     #000000 0%,
-    #01050e 35%,
-    #041233 70%,
-    #0a2a66 100%
+    #000000 34%,
+    #020d26 52%,
+    #0a3a92 64%,
+    #1a63d4 74%,
+    #5f9be0 86%,
+    #cfe4f8 100%
   );
   background-attachment: fixed;
   overflow-x: hidden;
@@ -80,24 +83,15 @@ body {
   }
 }
 
-/* ---- nebulosas ---- */
-.nebulosa {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(90px);
-  animation: respirar 14s ease-in-out infinite;
-}
-
-@keyframes respirar {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.12);
-  }
+/* ---- mar de nubes ---- */
+.horizonte {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(150, 200, 255, 0.4),
+    rgba(210, 235, 255, 0.6)
+  );
+  filter: blur(20px);
 }
 
 /* ---- constelación flotando ---- */

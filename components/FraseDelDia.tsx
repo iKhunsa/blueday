@@ -101,12 +101,15 @@ export default function FraseDelDia({
         {anteriores.length > 0 && (
           <button
             onClick={() => setArchivoAbierto(true)}
-            className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs tracking-widest text-[var(--texto-suave)] backdrop-blur transition hover:border-white/25 hover:text-[var(--texto)]"
+            className="rounded-full border border-white/20 bg-[#04102a]/50 px-5 py-2 text-xs tracking-widest text-white/80 shadow-lg backdrop-blur transition hover:border-white/40 hover:text-white"
           >
             ✧ noches anteriores
           </button>
         )}
-        <p className="text-[10px] tracking-[0.3em] text-[var(--texto-suave)] opacity-50">
+        <p
+          className="text-[10px] tracking-[0.3em] text-[#0a2a5c]/70"
+          style={{ textShadow: "0 1px 6px rgba(255,255,255,0.5)" }}
+        >
           HECHO PARA TI
         </p>
       </motion.footer>
