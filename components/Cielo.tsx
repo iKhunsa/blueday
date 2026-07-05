@@ -82,18 +82,21 @@ function ConstelacionMichi({
   );
 }
 
-// Mar de nubes: PNG pregenerado con ruido fractal (el fade desde arriba va
-// horneado en la imagen). Filtros SVG en vivo saturaban el renderer.
+// Mar de nubes: PNG pregenerado con ruido fractal, tileable en X (se repite
+// en vez de estirarse — nunca se pixela sin importar el ancho de pantalla).
+// El fade hacia el cielo es un mask-image en CSS (ver .nubes en globals.css),
+// así queda igual de suave en cualquier tamaño de viewport.
 function Nubes() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[38vh]">
+    <div className="nubes pointer-events-none absolute inset-x-0 bottom-0 h-[38vh]">
       {/* línea de luz donde el cielo toca las nubes */}
       <div className="horizonte absolute inset-x-0 top-[18%] h-16" />
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: "url(/nubes.png)",
-          backgroundSize: "cover",
+          backgroundRepeat: "repeat-x",
+          backgroundSize: "auto 100%",
           backgroundPosition: "center bottom",
         }}
       />

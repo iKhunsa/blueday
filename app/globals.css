@@ -84,6 +84,13 @@ body {
 }
 
 /* ---- mar de nubes ---- */
+.nubes {
+  /* fade hacia el cielo independiente del viewport: opera sobre los píxeles
+     ya renderizados del contenedor, no sobre el PNG crudo debajo */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 42%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 42%);
+}
+
 .horizonte {
   background: linear-gradient(
     to bottom,
