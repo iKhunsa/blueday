@@ -12,8 +12,16 @@ const FRASES_PATH = path.join(process.cwd(), "content", "frases.md");
 
 /** Parsea content/frases.md: bloques `## YYYY-MM-DD` seguidos del texto. */
 export function getFrases(): Map<string, Frase> {
-  const raw = fs.readFileSync(FRASES_PATH, "utf-8");
   const frases = new Map<string, Frase>();
+
+  let raw: string;
+  try {
+    raw = fs.readFileSync(FRASES_PATH, "utf-8");
+  } catch (error) {
+    // Sin archivo no hay 500: la página cae a FRASE_FALLBACK.
+    console.error(`No se pudo leer ${FRASES_PATH}:`, error);
+    return frases;
+  }
 
   for (const bloque of raw.split(/^##\s+/m)) {
     const lineas = bloque.trim().split("\n");
@@ -57,7 +65,8 @@ export function getNumeroDia(hoy: string): number {
     const [y, m, d] = iso.split("-").map(Number);
     return Date.UTC(y, m - 1, d);
   };
-  return Math.floor((aUTC(hoy) - aUTC(FECHA_INICIO)) / 86_400_000) + 1;
+  // Nunca menos de 1, aunque el reloj quede antes de FECHA_INICIO.
+  return Math.max(1, Math.floor((aUTC(hoy) - aUTC(FECHA_INICIO)) / 86_400_000) + 1);
 }
 
 export function getFraseDeHoy(): {

@@ -101,6 +101,66 @@ body {
   filter: blur(20px);
 }
 
+/* ---- entrada del contenido ----
+   CSS puro: el texto aparece aunque el JS falle (antes dependía de
+   framer-motion y un error de hidratación dejaba todo en opacity:0). */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@keyframes aparecer-suave {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.aparecer {
+  animation: aparecer 1.2s ease-out both;
+}
+
+.aparecer-suave {
+  animation: aparecer-suave 1.5s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aparecer,
+  .aparecer-suave,
+  .destello,
+  .estrella,
+  .fugaz {
+    animation: none;
+  }
+}
+
+/* ---- destello junto a la frase ---- */
+.destello {
+  animation: destello-pulso 3s ease-in-out infinite;
+}
+
+@keyframes destello-pulso {
+  0%,
+  100% {
+    opacity: 0.7;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.25;
+  }
+}
+
 /* ---- brillo del texto ---- */
 .brillo-suave {
   text-shadow: 0 0 24px rgba(138, 184, 255, 0.35),
