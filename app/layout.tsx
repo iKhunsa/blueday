@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -17,6 +17,15 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Bajo el mismo cielo",
   description: "Un pequeño rincón del universo, solo para ti.",
+  appleWebApp: {
+    capable: true,
+    title: "Blue day",
+    statusBarStyle: "black-translucent",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#01050e",
 };
 
 export default function RootLayout({
