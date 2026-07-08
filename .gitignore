@@ -5,3 +5,8 @@ out
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+
+# Poemas personales (no subir al repo público)
+content/*.pdf
