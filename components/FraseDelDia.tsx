@@ -252,7 +252,7 @@ export default function FraseDelDia({
 
       {/* pie */}
       <footer
-        className="aparecer-suave absolute bottom-[calc(2rem+env(safe-area-inset-bottom))] flex flex-col items-center gap-2"
+        className="aparecer-suave absolute bottom-8 flex flex-col items-center gap-2"
         style={{ animationDelay: "2.2s" }}
       >
         {anteriores.length > 0 && (
