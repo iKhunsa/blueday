@@ -44,6 +44,37 @@ function renderTexto(texto: string): string {
     .replace(/\n/g, "<br />");
 }
 
+// Meta del contador del pie: 2027-06-13 a las 00:00 en America/Guayaquil (UTC-5, sin horario de verano).
+const META_CONTADOR = Date.UTC(2027, 5, 13, 5, 0, 0);
+
+// El servidor no puede saber la hora del cliente, así que el contador solo se
+// calcula tras montar; antes se reserva el espacio para no mover el pie.
+function ContadorRegresivo() {
+  const [restante, setRestante] = useState<number | null>(null);
+
+  useEffect(() => {
+    const tick = () => setRestante(Math.max(0, META_CONTADOR - Date.now()));
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  if (restante === null) return <span aria-hidden="true">&nbsp;</span>;
+  if (restante === 0) return <>HECHO PARA TI</>;
+
+  const total = Math.floor(restante / 1000);
+  const dias = Math.floor(total / 86400);
+  const horas = Math.floor((total % 86400) / 3600);
+  const minutos = Math.floor((total % 3600) / 60);
+  const segundos = total % 60;
+  const dd = (n: number) => String(n).padStart(2, "0");
+  return (
+    <>
+      FALTAN {dias} {dias === 1 ? "DÍA" : "DÍAS"} {dd(horas)}:{dd(minutos)}:{dd(segundos)}
+    </>
+  );
+}
+
 function Destello({ className }: { className?: string }) {
   return (
     <svg
@@ -234,10 +265,10 @@ export default function FraseDelDia({
           </button>
         )}
         <p
-          className="text-[10px] tracking-[0.3em] text-[#0a2a5c]/70"
+          className="text-[10px] tracking-[0.3em] tabular-nums text-[#0a2a5c]/70"
           style={{ textShadow: "0 1px 6px rgba(255,255,255,0.5)" }}
         >
-          HECHO PARA TI
+          <ContadorRegresivo />
         </p>
       </footer>
 
