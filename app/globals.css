@@ -11,6 +11,11 @@ body {
   height: 100%;
 }
 
+html {
+  /* respaldo: barra de estado (viewport-fit=cover) y overscroll */
+  background: #000;
+}
+
 body {
   color: var(--texto);
   font-family: var(--font-inter), system-ui, sans-serif;
