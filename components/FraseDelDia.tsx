@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { FECHA_INICIO } from "@/lib/config";
+import { FECHA_INICIO, TIMEZONE } from "@/lib/config";
 
 type FrasePlana = { fecha: string; fechaLarga: string; texto: string };
 
@@ -42,6 +43,16 @@ function renderTexto(texto: string): string {
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/\n/g, "<br />");
+}
+
+// Hoy (YYYY-MM-DD) calculado en el navegador, misma zona horaria que el servidor.
+function fechaHoyCliente(): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
 }
 
 // Meta del contador del pie: 2027-06-13 a las 00:00 en America/Guayaquil (UTC-5, sin horario de verano).
@@ -106,6 +117,24 @@ export default function FraseDelDia({
 }) {
   const [archivoAbierto, setArchivoAbierto] = useState(false);
   const [fechaSeleccionada, setFechaSeleccionada] = useState<string | null>(null);
+  const router = useRouter();
+
+  // Si el día cambia con la app abierta (medianoche, pestaña/PWA que se reabre),
+  // se re-pide la frase al servidor sin recargar la página entera.
+  useEffect(() => {
+    const comprobarDia = () => {
+      if (fechaHoyCliente() !== hoy.fecha) router.refresh();
+    };
+    comprobarDia();
+    const id = window.setInterval(comprobarDia, 60_000);
+    window.addEventListener("focus", comprobarDia);
+    document.addEventListener("visibilitychange", comprobarDia);
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener("focus", comprobarDia);
+      document.removeEventListener("visibilitychange", comprobarDia);
+    };
+  }, [hoy.fecha, router]);
   // Dirección del último cambio de mes (para animar el slide hacia el lado correcto).
   const [direccionMes, setDireccionMes] = useState(1);
 
