@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FECHA_INICIO, TIMEZONE } from "@/lib/config";
+import { getNumeroDia } from "@/lib/fechas";
 
 type FrasePlana = { fecha: string; fechaLarga: string; texto: string };
 
@@ -117,6 +118,8 @@ export default function FraseDelDia({
 }) {
   const [archivoAbierto, setArchivoAbierto] = useState(false);
   const [fechaSeleccionada, setFechaSeleccionada] = useState<string | null>(null);
+  // Frase pasada mostrada a pantalla completa, como si fuera la del día ("volver al pasado").
+  const [vistaEnVivo, setVistaEnVivo] = useState<FrasePlana | null>(null);
   const router = useRouter();
 
   // Si el día cambia con la app abierta (medianoche, pestaña/PWA que se reabre),
@@ -140,6 +143,7 @@ export default function FraseDelDia({
 
   const botonArchivoRef = useRef<HTMLButtonElement>(null);
   const botonCerrarRef = useRef<HTMLButtonElement>(null);
+  const botonVolverRef = useRef<HTMLButtonElement>(null);
   const estabaAbierto = useRef(false);
 
   const inicio = useMemo(() => partesIso(FECHA_INICIO), []);
@@ -198,6 +202,33 @@ export default function FraseDelDia({
     setFechaSeleccionada(null);
   };
 
+  // Abre la frase seleccionada a pantalla completa.
+  const abrirEnVivo = () => {
+    if (!fraseSeleccionada) return;
+    if (fraseSeleccionada.fecha === hoy.fecha) {
+      // La página principal ya es esa vista.
+      cerrarArchivo();
+      return;
+    }
+    setVistaEnVivo(fraseSeleccionada);
+    setArchivoAbierto(false);
+  };
+
+  // Vuelve directo a la frase del día por defecto (sin reabrir el archivo).
+  const volverAHoy = () => {
+    setVistaEnVivo(null);
+    cerrarArchivo();
+  };
+
+  const irNocheEnVivo = (delta: number) => {
+    if (!vistaEnVivo) return;
+    const indice = nochesNavegables.findIndex((f) => f.fecha === vistaEnVivo.fecha);
+    const destino = indice >= 0 ? nochesNavegables[indice + delta] : undefined;
+    if (destino) {
+      setVistaEnVivo(destino);
+    }
+  };
+
   // Teclado: Escape cierra por pasos; ← → navegan noches dentro del detalle.
   useEffect(() => {
     if (!archivoAbierto) return;
@@ -214,6 +245,25 @@ export default function FraseDelDia({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   });
+
+  // Teclado en vista en vivo: Escape vuelve a hoy; ← → cambian de noche.
+  useEffect(() => {
+    if (!vistaEnVivo) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") volverAHoy();
+      else if (e.key === "ArrowLeft") irNocheEnVivo(-1);
+      else if (e.key === "ArrowRight") irNocheEnVivo(1);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+
+  // Foco al entrar en vista en vivo (el botón del pie del archivo ya no existe).
+  useEffect(() => {
+    if (!vistaEnVivo) return;
+    const id = window.setTimeout(() => botonVolverRef.current?.focus(), 60);
+    return () => window.clearTimeout(id);
+  }, [vistaEnVivo]);
 
   // Foco: al abrir va al botón de cerrar; al cerrar vuelve al botón del pie.
   useEffect(() => {
@@ -246,15 +296,21 @@ export default function FraseDelDia({
     return lista;
   }, [mesVisto, hoy.fecha, mapaAnteriores]);
 
+  // Frase mostrada a pantalla completa: la del pasado (vista en vivo) o la de hoy.
+  const mostrada = vistaEnVivo ?? hoy;
+  const numeroMostrado = vistaEnVivo ? getNumeroDia(vistaEnVivo.fecha) : numeroDia;
+
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <div className="flex max-w-3xl flex-col items-center">
+      {/* key por fecha: al cambiar de noche se remonta y las animaciones CSS
+          de entrada se reproducen otra vez, como si la frase amaneciera en vivo. */}
+      <div key={mostrada.fecha} className="flex max-w-3xl flex-col items-center">
         {/* encabezado */}
         <p
           className="aparecer mb-8 text-[11px] uppercase tracking-[0.45em] text-[var(--texto-suave)]"
           style={{ animationDelay: "0.4s", animationDuration: "1.1s" }}
         >
-          Día <span className="brillo-acento">{numeroDia}</span> bajo el mismo
+          Día <span className="brillo-acento">{numeroMostrado}</span> bajo el mismo
           cielo
         </p>
 
@@ -266,7 +322,7 @@ export default function FraseDelDia({
           <Destello className="absolute -right-8 -top-8 h-7 w-7 md:-right-12 md:-top-10 md:h-9 md:w-9" />
           <blockquote
             className="font-frase brillo-suave text-3xl font-light leading-snug text-[var(--texto)] md:text-5xl md:leading-snug"
-            dangerouslySetInnerHTML={{ __html: renderTexto(hoy.texto) }}
+            dangerouslySetInnerHTML={{ __html: renderTexto(mostrada.texto) }}
           />
         </div>
 
@@ -275,30 +331,43 @@ export default function FraseDelDia({
           className="aparecer mt-10 text-sm text-[var(--texto-suave)]"
           style={{ animationDelay: "1.1s", animationDuration: "1.1s" }}
         >
-          {hoy.fechaLarga}
+          {mostrada.fechaLarga}
         </p>
       </div>
 
       {/* pie */}
       <footer
+        key={vistaEnVivo ? `vivo-${mostrada.fecha}` : "hoy"}
         className="aparecer-suave absolute bottom-8 flex flex-col items-center gap-2"
         style={{ animationDelay: "2.2s" }}
       >
-        {anteriores.length > 0 && (
+        {vistaEnVivo ? (
           <button
-            ref={botonArchivoRef}
-            onClick={() => setArchivoAbierto(true)}
-            className="rounded-full border border-white/20 bg-[#04102a]/50 px-5 py-2 text-xs tracking-widest text-white/80 shadow-lg backdrop-blur transition hover:border-white/40 hover:text-white"
+            ref={botonVolverRef}
+            onClick={volverAHoy}
+            className="rounded-full border border-white/15 bg-[#04102a]/40 px-5 py-2 text-xs tracking-widest text-white/60 shadow-lg backdrop-blur transition outline-none hover:border-white/40 hover:text-white focus-visible:border-white/60 focus-visible:text-white"
           >
-            ✧ noches anteriores
+            ← volver a hoy
           </button>
+        ) : (
+          <>
+            {anteriores.length > 0 && (
+              <button
+                ref={botonArchivoRef}
+                onClick={() => setArchivoAbierto(true)}
+                className="rounded-full border border-white/20 bg-[#04102a]/50 px-5 py-2 text-xs tracking-widest text-white/80 shadow-lg backdrop-blur transition hover:border-white/40 hover:text-white"
+              >
+                ✧ noches anteriores
+              </button>
+            )}
+            <p
+              className="text-[10px] tracking-[0.3em] tabular-nums text-[#0a2a5c]/70"
+              style={{ textShadow: "0 1px 6px rgba(255,255,255,0.5)" }}
+            >
+              <ContadorRegresivo />
+            </p>
+          </>
         )}
-        <p
-          className="text-[10px] tracking-[0.3em] tabular-nums text-[#0a2a5c]/70"
-          style={{ textShadow: "0 1px 6px rgba(255,255,255,0.5)" }}
-        >
-          <ContadorRegresivo />
-        </p>
       </footer>
 
       {/* archivo de noches anteriores */}
@@ -345,12 +414,20 @@ export default function FraseDelDia({
                     exit={{ opacity: 0, x: -28 }}
                     transition={{ duration: 0.22, ease: "easeOut" }}
                   >
-                    <div className="archivo-scroll max-h-[55vh] overflow-y-auto px-6 py-6">
+                    <button
+                      type="button"
+                      onClick={abrirEnVivo}
+                      aria-label="Ver esta frase en pantalla completa"
+                      className="archivo-scroll block max-h-[55vh] w-full cursor-pointer overflow-y-auto px-6 py-6 transition hover:bg-white/5"
+                    >
                       <p
                         className="font-frase text-lg leading-relaxed text-[var(--texto)]"
                         dangerouslySetInnerHTML={{ __html: renderTexto(fraseSeleccionada.texto) }}
                       />
-                    </div>
+                      <p className="mt-4 text-[10px] tracking-widest text-[var(--texto-suave)] opacity-60">
+                        ✧ tocar para verla bajo el cielo
+                      </p>
+                    </button>
                     <div className="flex items-center justify-between border-t border-white/10 px-6 py-3">
                       <button
                         onClick={() => irNoche(-1)}

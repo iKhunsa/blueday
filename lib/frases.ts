@@ -1,6 +1,9 @@
 import fs from "fs";
 import path from "path";
-import { TIMEZONE, FECHA_INICIO, FRASE_FALLBACK } from "./config";
+import { TIMEZONE, FRASE_FALLBACK } from "./config";
+import { getNumeroDia } from "./fechas";
+
+export { getNumeroDia };
 
 export type Frase = {
   fecha: string; // YYYY-MM-DD
@@ -57,16 +60,6 @@ export function formatearFecha(iso: string): string {
     timeZone: "UTC",
   }).format(fecha);
   return larga.charAt(0).toUpperCase() + larga.slice(1);
-}
-
-/** Número de día desde FECHA_INICIO (el día de inicio cuenta como 1). */
-export function getNumeroDia(hoy: string): number {
-  const aUTC = (iso: string) => {
-    const [y, m, d] = iso.split("-").map(Number);
-    return Date.UTC(y, m - 1, d);
-  };
-  // Nunca menos de 1, aunque el reloj quede antes de FECHA_INICIO.
-  return Math.max(1, Math.floor((aUTC(hoy) - aUTC(FECHA_INICIO)) / 86_400_000) + 1);
 }
 
 export function getFraseDeHoy(): {
