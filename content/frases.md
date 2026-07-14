@@ -4,6 +4,23 @@ Cada bloque empieza con `## YYYY-MM-DD` y debajo va la frase de ese día.
 Puedes pegar 30 de golpe o editar un día puntual: solo importa la fecha.
 Se admite **negrita**, *cursiva* y saltos de línea.
 
+Para un día con video de YouTube en vez de (o además de) texto, la primera
+línea del bloque debe ser `[youtube: <url-o-id>]`; lo que siga debajo es una
+leyenda opcional:
+
+```
+## YYYY-MM-DD
+[youtube: https://youtu.be/XXXXXXXXXXX]
+Leyenda opcional debajo del video.
+```
+
+Acepta `youtu.be/ID`, `youtube.com/watch?v=ID`, `youtube.com/embed/ID`,
+`youtube.com/shorts/ID`, o el ID de 11 caracteres directo.
+
+## 2026-05-01
+[youtube: https://youtu.be/6_LsCe4jUF8?si=wgEK65oSMM4YpLtI]
+Prueba de día con video.
+
 ## 2026-07-04
 Hoy decidí que cada una de tus mañanas empiece con un recordatorio: alguien, bajo este mismo cielo, sonríe solo por saber que existes.
 

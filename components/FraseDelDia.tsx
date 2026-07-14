@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FECHA_INICIO, TIMEZONE } from "@/lib/config";
 import { getNumeroDia } from "@/lib/fechas";
 
-type FrasePlana = { fecha: string; fechaLarga: string; texto: string };
+type FrasePlana = { fecha: string; fechaLarga: string; texto: string; videoId?: string };
 
 const DIAS_SEMANA = ["L", "M", "M", "J", "V", "S", "D"];
 const MESES = [
@@ -304,7 +304,10 @@ export default function FraseDelDia({
     <main className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
       {/* key por fecha: al cambiar de noche se remonta y las animaciones CSS
           de entrada se reproducen otra vez, como si la frase amaneciera en vivo. */}
-      <div key={mostrada.fecha} className="flex max-w-3xl flex-col items-center">
+      <div
+        key={mostrada.fecha}
+        className={`flex flex-col items-center ${mostrada.videoId ? "w-full max-w-5xl" : "max-w-3xl"}`}
+      >
         {/* encabezado */}
         <p
           className="aparecer mb-8 text-[11px] uppercase tracking-[0.45em] text-[var(--texto-suave)]"
@@ -314,16 +317,38 @@ export default function FraseDelDia({
           cielo
         </p>
 
-        {/* frase */}
+        {/* frase o video */}
         <div
-          className="aparecer relative"
+          className="aparecer relative w-full"
           style={{ animationDelay: "0.75s", animationDuration: "1.4s" }}
         >
-          <Destello className="absolute -right-8 -top-8 h-7 w-7 md:-right-12 md:-top-10 md:h-9 md:w-9" />
-          <blockquote
-            className="font-frase brillo-suave text-3xl font-light leading-snug text-[var(--texto)] md:text-5xl md:leading-snug"
-            dangerouslySetInnerHTML={{ __html: renderTexto(mostrada.texto) }}
-          />
+          {mostrada.videoId ? (
+            <div className="mx-auto flex w-full flex-col items-center gap-6">
+              <div className="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+                <iframe
+                  className="h-full w-full"
+                  src={`https://www.youtube-nocookie.com/embed/${mostrada.videoId}?rel=0`}
+                  title={mostrada.fechaLarga}
+                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+              {mostrada.texto && (
+                <p
+                  className="font-frase brillo-suave text-lg italic text-[var(--texto)] md:text-xl"
+                  dangerouslySetInnerHTML={{ __html: renderTexto(mostrada.texto) }}
+                />
+              )}
+            </div>
+          ) : (
+            <>
+              <Destello className="absolute -right-8 -top-8 h-7 w-7 md:-right-12 md:-top-10 md:h-9 md:w-9" />
+              <blockquote
+                className="font-frase brillo-suave text-3xl font-light leading-snug text-[var(--texto)] md:text-5xl md:leading-snug"
+                dangerouslySetInnerHTML={{ __html: renderTexto(mostrada.texto) }}
+              />
+            </>
+          )}
         </div>
 
         {/* fecha */}
@@ -417,15 +442,44 @@ export default function FraseDelDia({
                     <button
                       type="button"
                       onClick={abrirEnVivo}
-                      aria-label="Ver esta frase en pantalla completa"
+                      aria-label={
+                        fraseSeleccionada.videoId
+                          ? "Ver este video en pantalla completa"
+                          : "Ver esta frase en pantalla completa"
+                      }
                       className="archivo-scroll block max-h-[55vh] w-full cursor-pointer overflow-y-auto px-6 py-6 transition hover:bg-white/5"
                     >
-                      <p
-                        className="font-frase text-lg leading-relaxed text-[var(--texto)]"
-                        dangerouslySetInnerHTML={{ __html: renderTexto(fraseSeleccionada.texto) }}
-                      />
+                      {fraseSeleccionada.videoId ? (
+                        <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-white/10">
+                          <img
+                            src={`https://i.ytimg.com/vi/${fraseSeleccionada.videoId}/hqdefault.jpg`}
+                            alt=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            className="h-full w-full object-cover"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-12 w-12 fill-white/90">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      ) : (
+                        <p
+                          className="font-frase text-lg leading-relaxed text-[var(--texto)]"
+                          dangerouslySetInnerHTML={{ __html: renderTexto(fraseSeleccionada.texto) }}
+                        />
+                      )}
+                      {fraseSeleccionada.videoId && fraseSeleccionada.texto && (
+                        <p
+                          className="font-frase mt-4 text-sm italic text-[var(--texto)] opacity-80"
+                          dangerouslySetInnerHTML={{ __html: renderTexto(fraseSeleccionada.texto) }}
+                        />
+                      )}
                       <p className="mt-4 text-[10px] tracking-widest text-[var(--texto-suave)] opacity-60">
-                        ✧ tocar para verla bajo el cielo
+                        {fraseSeleccionada.videoId
+                          ? "✧ tocar para reproducir bajo el cielo"
+                          : "✧ tocar para verla bajo el cielo"}
                       </p>
                     </button>
                     <div className="flex items-center justify-between border-t border-white/10 px-6 py-3">
@@ -495,15 +549,25 @@ export default function FraseDelDia({
                       {celdas.map((c, i) => {
                         if (!c) return <span key={i} />;
                         if (c.estado === "disponible") {
+                          const esVideo = mapaAnteriores.get(c.iso)?.videoId;
                           return (
                             <button
                               key={i}
                               onClick={() => setFechaSeleccionada(c.iso)}
                               aria-label={`Ver frase del ${c.dia} de ${MESES[mesVisto.month]}`}
-                              className="aspect-square rounded-full text-sm text-[var(--texto)] shadow-inner transition hover:bg-white/25 hover:shadow-[0_0_14px_rgba(233,238,248,0.35)]"
+                              className="relative aspect-square rounded-full text-sm text-[var(--texto)] shadow-inner transition hover:bg-white/25 hover:shadow-[0_0_14px_rgba(233,238,248,0.35)]"
                               style={{ background: "rgba(255,255,255,0.12)" }}
                             >
                               {c.dia}
+                              {esVideo && (
+                                <svg
+                                  viewBox="0 0 8 8"
+                                  aria-hidden="true"
+                                  className="absolute bottom-1 right-1 h-2 w-2 fill-[var(--acento)] opacity-90"
+                                >
+                                  <path d="M1 0 L8 4 L1 8 Z" />
+                                </svg>
+                              )}
                             </button>
                           );
                         }
@@ -516,10 +580,20 @@ export default function FraseDelDia({
                               className="relative aspect-square rounded-full border border-[var(--acento)] text-sm text-[var(--texto)] transition hover:bg-white/10"
                             >
                               {c.dia}
-                              <span
-                                aria-hidden="true"
-                                className="absolute bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--acento)]"
-                              />
+                              {hoy.videoId ? (
+                                <svg
+                                  viewBox="0 0 8 8"
+                                  aria-hidden="true"
+                                  className="absolute bottom-1.5 left-1/2 h-2 w-2 -translate-x-1/2 fill-[var(--acento)]"
+                                >
+                                  <path d="M1 0 L8 4 L1 8 Z" />
+                                </svg>
+                              ) : (
+                                <span
+                                  aria-hidden="true"
+                                  className="absolute bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[var(--acento)]"
+                                />
+                              )}
                             </button>
                           );
                         }

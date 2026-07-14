@@ -9,11 +9,40 @@ export type Frase = {
   fecha: string; // YYYY-MM-DD
   fechaLarga: string; // "viernes, 4 de julio de 2026"
   texto: string;
+  videoId?: string; // ID de video de YouTube, si el día es un video en vez de (o además de) texto
 };
 
 const FRASES_PATH = path.join(process.cwd(), "content", "frases.md");
 
-/** Parsea content/frases.md: bloques `## YYYY-MM-DD` seguidos del texto. */
+// Marcador `[youtube: <url-o-id>]` como primera línea del bloque.
+const MARCADOR_YOUTUBE = /^\[youtube:\s*(.+?)\]\s*$/i;
+
+/** Extrae el ID de 11 caracteres de una URL de YouTube (o lo devuelve tal cual si ya es un ID). */
+function extraerIdYoutube(entrada: string): string | null {
+  const valor = entrada.trim();
+  if (/^[\w-]{11}$/.test(valor)) return valor;
+  try {
+    const url = new URL(/^https?:\/\//i.test(valor) ? valor : `https://${valor}`);
+    const host = url.hostname.replace(/^www\./, "").replace(/^m\./, "");
+    if (host === "youtu.be") {
+      const id = url.pathname.slice(1).split("/")[0];
+      return /^[\w-]{11}$/.test(id) ? id : null;
+    }
+    if (host === "youtube.com") {
+      if (url.pathname === "/watch") {
+        const id = url.searchParams.get("v");
+        return id && /^[\w-]{11}$/.test(id) ? id : null;
+      }
+      const m = url.pathname.match(/^\/(?:embed|shorts)\/([\w-]{11})/);
+      if (m) return m[1];
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+/** Parsea content/frases.md: bloques `## YYYY-MM-DD` seguidos del texto (o un marcador de video). */
 export function getFrases(): Map<string, Frase> {
   const frases = new Map<string, Frase>();
 
@@ -29,9 +58,21 @@ export function getFrases(): Map<string, Frase> {
   for (const bloque of raw.split(/^##\s+/m)) {
     const lineas = bloque.trim().split("\n");
     const fecha = lineas[0]?.trim();
-    const texto = lineas.slice(1).join("\n").trim();
-    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha) && texto) {
-      frases.set(fecha, { fecha, fechaLarga: formatearFecha(fecha), texto });
+    let texto = lineas.slice(1).join("\n").trim();
+
+    let videoId: string | undefined;
+    const primeraLinea = texto.split("\n")[0] ?? "";
+    const marcador = primeraLinea.match(MARCADOR_YOUTUBE);
+    if (marcador) {
+      const id = extraerIdYoutube(marcador[1]);
+      if (id) {
+        videoId = id;
+        texto = texto.slice(primeraLinea.length).trim();
+      }
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha) && (texto || videoId)) {
+      frases.set(fecha, { fecha, fechaLarga: formatearFecha(fecha), texto, videoId });
     }
   }
   return frases;
