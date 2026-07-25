@@ -85,7 +85,7 @@ Los mapas hablan de kilómetros. Mi pecho dice que estás aquí, a un pensamient
 Si esta noche pasa un cometa, no le pediré nada: a mí ya me fue concedido lo que otros le piden al cielo. ☄️
 
 ## 2026-07-25
-Hay abrigos que no se tejen: se dicen. Tu buenos días me arropa más que cualquier lana.
+Me desvelé con una leoncita 🦁 y madrugué por el sueño de una gatita, porque mi amor no se divide entre las dos: se multiplica. Y decirles "te amo" mientras duermen es mi momento favorito.
 
 ## 2026-07-26
 Los libros buenos los leo despacio porque no quiero que se acaben. Contigo no tengo ese miedo: lo nuestro no está escrito para terminar.
