@@ -94,7 +94,7 @@ Los libros buenos los leo despacio porque no quiero que se acaben. Contigo no te
 Tendí la cama pensándote y quedó mejor que nunca. El amor mejora hasta las tareas más simples.
 
 ## 2026-07-28
-Tu voz y tu peso tibio adormilado son la única razón que tengo para no salir de casa.🐈‍⬛✨🦁
+Tu voz y tu peso tibio adormilado son la única razón que tengo para no salir de mi cama...🐈‍⬛✨🦁
 
 ## 2026-07-29
 Me gustas sin máscara, sin libreto, sin filtro. La verdad te queda tan bien que a su lado cualquier adorno sobra.
