@@ -116,7 +116,7 @@ Hoy probé una fruta dulcísima y mi primer instinto fue guardarte la mitad. As�
 
 ## 2026-08-04
 [youtube: https://youtu.be/g7OiLSub5Pg?si=t1baOyGyGvekR0IN]
-Un mes ya de dejarte palabras bajo este cielo. Podría escribirte mil años y todavía me quedarían cosas nuevas que decirte, gatita🐈‍⬛✨
+Un mes ya de dejarte palabras bajo este cielo. Podría escribirte mil años y todavía me quedarían cosas nuevas que decirte, mi ardillita 🐿️✨
 
 ## 2026-08-05
 El semáforo en rojo ya no me impacienta: son treinta segundos oficiales para pensarte sin culpa.
