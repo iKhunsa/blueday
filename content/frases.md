@@ -115,7 +115,8 @@ Si el amor fuera un idioma, la gramática no me alcanzaría: a ti te hablo mejor
 Hoy probé una fruta dulcísima y mi primer instinto fue guardarte la mitad. Así sabré siempre que te amo: lo bueno me sabe a compartirlo contigo.
 
 ## 2026-08-04
-Un mes ya de dejarte palabras bajo este cielo. Podría escribirte mil años y todavía me quedarían cosas nuevas que decirte, princesa. ✨
+[youtube: https://youtu.be/g7OiLSub5Pg?si=t1baOyGyGvekR0IN]
+Un mes ya de dejarte palabras bajo este cielo. Podría escribirte mil años y todavía me quedarían cosas nuevas que decirte, gatita🐈‍⬛✨
 
 ## 2026-08-05
 El semáforo en rojo ya no me impacienta: son treinta segundos oficiales para pensarte sin culpa.
