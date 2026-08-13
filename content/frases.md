@@ -17,6 +17,16 @@ Leyenda opcional debajo del video.
 Acepta `youtu.be/ID`, `youtube.com/watch?v=ID`, `youtube.com/embed/ID`,
 `youtube.com/shorts/ID`, o el ID de 11 caracteres directo.
 
+Para un día con crucigrama interactivo (propio, sin servicio externo), la
+primera línea del bloque debe ser `[crossword-local: <id>]`; lo que siga
+debajo sigue siendo la frase normal del día:
+
+```
+## YYYY-MM-DD
+[crossword-local: allie]
+Frase normal del día, debajo del crucigrama.
+```
+
 ## 2026-05-01
 [youtube: https://youtu.be/6_LsCe4jUF8?si=wgEK65oSMM4YpLtI]
 Prueba de día con video.
@@ -143,7 +153,8 @@ El cielo estuvo gris todo el día y no me importó: aprendí que mi clima interi
 Esta noche llueven estrellas, dicen. Que llueva lo que quiera: mi deseo camina, habla y me dice gatita cuando se deja apapachar. ☄️
 
 ## 2026-08-13
-Me preguntaron qué es la paz y casi respondo con tu nombre. Me contuve: hay respuestas que solo te pertenecen a ti.
+[crossword-local: allie]
+Gracias por estos 2 meses tan bonitos. Contigo hasta lo simple se vuelve especial. Te amo con la misma insistencia, temporalidad e intensidad con la que el mar toca la orilla, desde siempre hasta siempre... gracias, amore mio, por encontrarme.
 
 ## 2026-08-14
 Los relojes miden el tiempo, pero no lo entienden. Una hora contigo dura un suspiro; un día sin ti, una era geológica. ✨

@@ -10,12 +10,16 @@ export type Frase = {
   fechaLarga: string; // "viernes, 4 de julio de 2026"
   texto: string;
   videoId?: string; // ID de video de YouTube, si el día es un video en vez de (o además de) texto
+  crucigramaId?: string; // Id del crucigrama local (ver components/Crucigrama.tsx), si el día tiene uno
 };
 
 const FRASES_PATH = path.join(process.cwd(), "content", "frases.md");
 
 // Marcador `[youtube: <url-o-id>]` como primera línea del bloque.
 const MARCADOR_YOUTUBE = /^\[youtube:\s*(.+?)\]\s*$/i;
+
+// Marcador `[crossword-local: <id>]` como primera línea del bloque.
+const MARCADOR_CRUCIGRAMA = /^\[crossword-local:\s*(.+?)\]\s*$/i;
 
 /** Extrae el ID de 11 caracteres de una URL de YouTube (o lo devuelve tal cual si ya es un ID). */
 function extraerIdYoutube(entrada: string): string | null {
@@ -61,18 +65,23 @@ export function getFrases(): Map<string, Frase> {
     let texto = lineas.slice(1).join("\n").trim();
 
     let videoId: string | undefined;
+    let crucigramaId: string | undefined;
     const primeraLinea = texto.split("\n")[0] ?? "";
-    const marcador = primeraLinea.match(MARCADOR_YOUTUBE);
-    if (marcador) {
-      const id = extraerIdYoutube(marcador[1]);
+    const marcadorVideo = primeraLinea.match(MARCADOR_YOUTUBE);
+    const marcadorCrucigrama = primeraLinea.match(MARCADOR_CRUCIGRAMA);
+    if (marcadorVideo) {
+      const id = extraerIdYoutube(marcadorVideo[1]);
       if (id) {
         videoId = id;
         texto = texto.slice(primeraLinea.length).trim();
       }
+    } else if (marcadorCrucigrama) {
+      crucigramaId = marcadorCrucigrama[1].trim();
+      texto = texto.slice(primeraLinea.length).trim();
     }
 
-    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha) && (texto || videoId)) {
-      frases.set(fecha, { fecha, fechaLarga: formatearFecha(fecha), texto, videoId });
+    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha) && (texto || videoId || crucigramaId)) {
+      frases.set(fecha, { fecha, fechaLarga: formatearFecha(fecha), texto, videoId, crucigramaId });
     }
   }
   return frases;

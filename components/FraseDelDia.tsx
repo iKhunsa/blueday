@@ -5,8 +5,15 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FECHA_INICIO, TIMEZONE } from "@/lib/config";
 import { getNumeroDia } from "@/lib/fechas";
+import Crucigrama from "./Crucigrama";
 
-type FrasePlana = { fecha: string; fechaLarga: string; texto: string; videoId?: string };
+type FrasePlana = {
+  fecha: string;
+  fechaLarga: string;
+  texto: string;
+  videoId?: string;
+  crucigramaId?: string;
+};
 
 const DIAS_SEMANA = ["L", "M", "M", "J", "V", "S", "D"];
 const MESES = [
@@ -350,6 +357,13 @@ export default function FraseDelDia({
             </>
           )}
         </div>
+
+        {/* crucigrama del día, si lo hay: tarjeta chica que abre en pantalla completa */}
+        {mostrada.crucigramaId && (
+          <div className="aparecer-suave flex w-full justify-center" style={{ animationDelay: "1.4s" }}>
+            <Crucigrama />
+          </div>
+        )}
 
         {/* fecha */}
         <p
