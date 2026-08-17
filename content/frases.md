@@ -166,7 +166,7 @@ Aprendí a doblar la ropa con calma, como quien dobla banderas importantes. Todo
 Entre miles de mensajes que llegan a este mundo cada segundo, los tuyos tienen algo imposible: hacen que el teléfono pese menos y el día también.
 
 ## 2026-08-17
-No te quiero a mi medida, te quiero a la tuya: con tu espacio, tu tiempo y tus silencios. El amor que aprieta no es amor, es miedo.
+Feliza 200 dias .. unos dias mas cerca de mi gatita y pronto mas cerca de tu alma. gracias por quedarte conmigo en estos primeros 135 dias.💙💕
 
 ## 2026-08-18
 Un gatito me miró fijo en la calle, como reconociéndome. Debe ser que ya se me nota: amo a una gatita y eso deja marca. 🐈‍⬛
