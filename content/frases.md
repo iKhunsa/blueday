@@ -247,10 +247,10 @@ En la biblioteca hay miles de historias de amor. Sonreí con una soberbia de con
 El truco de la bicicleta es mirar hacia donde quieres ir, no hacia donde temes caer. Por eso te miro tanto a ti.
 
 ## 2026-09-13
-Dicen que los gatos se echan encima de lo que su humano más quiere. Tú, gatita, dormirías siempre sobre mi pecho. 🐈‍⬛
+Hoy es un mes más... y todavía se siente como el primer día. Me basta con ver tus ojos para saberlo todo, no necesitas decirme nada, ahí está tu amor, completo, en una sola mirada, y sigue siendo mi parte favorita del día, cada día. Poco a poco vamos aprendiendo el uno del otro, cosas chiquitas: una manía que se nos pega, una forma de decir algo que ya no sé si aprendí de ti o tú de mí, así, sin darnos cuenta, nos vamos pareciendo un poco más. Y aunque hoy estemos lejos, para los dos es un día menos para estar más cerca, cada día que pasa no nos separa, nos acerca. Mi gatita con lentes, el amor de mi vida, mi querida esposa, un mes más, y sigo eligiéndote, una mirada a la vez.
 
 ## 2026-09-14
-En el mercado se regatea todo menos lo esencial. Por ti habría pagado cualquier precio: me saliste gratis y aun así me hiciste rico.
+Dicen que los gatos se echan encima de lo que su humano más quiere. Tú, gatita, dormirías siempre sobre mi pecho. 🐈‍⬛
 
 ## 2026-09-15
 0.9, 0.99, 0.999... los matemáticos saben que eso, llevado al infinito, ya es 1. Así caí en ti: de a poquito y por completo. ✨
