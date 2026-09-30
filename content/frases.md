@@ -298,7 +298,8 @@ Mi planta sacó una hoja nueva y lo celebré como gol en final. Ando así: enamo
 Madrugué sin querer y me tocó el amanecer completo. Pensé: así ha de ser despertar contigo, el cielo estrenándose despacio, sin apuro, para nosotros. ✨
 
 ## 2026-09-30
-Antes la gente esperaba cartas durante semanas. Ahora entiendo su paciencia: por leer una palabra tuya yo también esperaría siglos, mi niña.
+[youtube: https://youtu.be/SyenaRJyy00?si=B7jXokVYcCtSkZ6b]
+Hoy te dedico esta cancion que es como me siento cada dia a tu lado. 
 
 ## 2026-10-01
 Estrené hoja del calendario y me gustó el gesto: cada mes es papel en blanco, y yo ya sé con qué nombre pienso llenarlo.
