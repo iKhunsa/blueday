@@ -344,7 +344,7 @@ Se me quemó la tostada y me reí solo en la cocina. Hasta mis pequeños desastr
 A mi rincón favorito de la casa le falta un solo detalle: tú leyendo a mi lado, robándome la cobija y el corazón en el mismo movimiento.
 
 ## 2026-10-15
-Todo lo sembrado con paciencia da fruto: lo dice el huerto y lo confirmo yo, que sembré honestidad contigo y coseché el amor más lindo que conozco.
+Todo lo sembrado con paciencia da fruto: lo dice el huerto y lo confirmo yo, que sembré honestidad contigo y coseché el amor más lindo que conozco. Feliz cumpleaños  mi plantita hermosa...
 
 ## 2026-10-16
 El viento no se ve: se ve lo que mueve. Con tu amor igual. No puedo mostrarlo, pero mírame bien: ando despeinado de felicidad. ✨
